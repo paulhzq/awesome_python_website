@@ -1,11 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-__author__ = 'Paul Huang'
-import logging
-from transwarp.web import get, view
+
+__author__ = 'Michael Liao'
+
+import os, re, time, base64, hashlib, logging
+
+from transwarp.web import get, post, ctx, view, interceptor, seeother, notfound
+
 from models import User, Blog, Comment
-@view('test_users.html')
+
+@view('blogs.html')
 @get('/')
-def test_users():
-	users = User.find_all()
-	return dict(users=users)
+def index():
+    blogs = Blog.find_all()
+    user = User.find_first('where email=?', 'admin@example.com')
+    return dict(blogs=blogs, user=user)
+
